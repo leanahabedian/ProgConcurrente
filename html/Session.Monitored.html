@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf8" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Session.Bare.html">
+<link rel="next" href="Session.Monadic.html">
+<link rel="Up" href="Session.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Session" rel="Chapter" href="Session.html">
+<link title="Service" rel="Chapter" href="Service.html"><link title="Contract constructors" rel="Section" href="#2_Contractconstructors">
+<link title="Monitored communications" rel="Section" href="#2_Monitoredcommunications">
+<title>Session.Monitored</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Session.Bare.html" title="Session.Bare">Previous</a>
+&nbsp;<a class="up" href="Session.html" title="Session">Up</a>
+&nbsp;<a class="post" href="Session.Monadic.html" title="Session.Monadic">Next</a>
+</div>
+<h1>Module <a href="type_Session.Monitored.html">Session.Monitored</a></h1>
+
+<pre><span class="keyword">module</span> Monitored: <code class="code">sig</code> <a href="Session.Monitored.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><span id="EXCEPTIONBlame"><span class="keyword">exception</span> Blame</span> <span class="keyword">of</span> <code class="type">string</code></pre>
+<div class="info ">
+Exception raised whenever a party is deemed responsible for a
+contract violation. The parameter is the symbolic name of the
+party.<br>
+</div>
+
+<pre><span id="TYPEct"><span class="keyword">type</span> <code class="type">'a</code> ct</span> </pre>
+<div class="info ">
+The type of a contract for values of type <code class="code">'a</code>.<br>
+</div>
+
+
+<pre><span id="TYPEmt"><span class="keyword">type</span> <code class="type">'a</code> mt</span> </pre>
+<div class="info ">
+The type of a monitored endpoint of type <code class="code">'a</code>.<br>
+</div>
+
+<br>
+<h2 id="2_Contractconstructors">Contract constructors</h2><br>
+
+<pre><span id="VALany_c"><span class="keyword">val</span> any_c</span> : <code class="type">'a <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">any_c</code> is the contract satisfied by every value.<br>
+</div>
+
+<pre><span id="VALflat_c"><span class="keyword">val</span> flat_c</span> : <code class="type">?name:string -> ('a -> bool) -> 'a <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">flat_c f</code> is the contract satisfied by all those values <code class="code">v</code> such
+that <code class="code">f v</code> evaluates to <code class="code">true</code>.<br>
+</div>
+
+<pre><span id="VALrec_c"><span class="keyword">val</span> rec_c</span> : <code class="type">('a <a href="Session.Monitored.html#TYPEct">ct</a> -> 'a <a href="Session.Monitored.html#TYPEct">ct</a>) -><br>       'a <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">rec_c f</code> is a recursive contract satisfied by those values that
+satisfy <code class="code">f (rec_c f)</code>.<br>
+</div>
+
+<pre><span id="VALend_c"><span class="keyword">val</span> end_c</span> : <code class="type"><a href="Session.html#TYPEet">Session.et</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">end_c</code> is the contract satisfied by an endpoint that is supposed to be closed.<br>
+</div>
+
+<pre><span id="VALreceive_d"><span class="keyword">val</span> receive_d</span> : <code class="type">'m <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('m -> ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a>) -><br>       ('m * ('a, 'b) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEit">Session.it</a> <a href="Session.Monitored.html#TYPEmt">mt</a><br>       <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">receive_d k f</code> is the dependent contract satisfied by an endpoint
+used to receive a message <code class="code">v</code> that satisfies k and then according to
+<code class="code">f v</code>.<br>
+</div>
+
+<pre><span id="VALreceive_c"><span class="keyword">val</span> receive_c</span> : <code class="type">'m <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('m * ('a, 'b) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEit">Session.it</a> <a href="Session.Monitored.html#TYPEmt">mt</a><br>       <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">receive_c k1 k2</code> is the non-dependent version of <code class="code">receive_c</code> and
+is equivalent to <code class="code">receive_d k1 (fun _ -&gt; k2)</code>.<br>
+</div>
+
+<pre><span id="VALsend_d"><span class="keyword">val</span> send_d</span> : <code class="type">'m <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('m -> ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a>) -><br>       ('m * ('b, 'a) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEot">Session.ot</a> <a href="Session.Monitored.html#TYPEmt">mt</a><br>       <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">send_d k f</code> is the dependent contract satisfied by an endpoint
+used to send a message <code class="code">v</code> that satisfies k and then according to <code class="code">f
+v</code>.<br>
+</div>
+
+<pre><span id="VALsend_c"><span class="keyword">val</span> send_c</span> : <code class="type">'m <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('m * ('b, 'a) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEot">Session.ot</a> <a href="Session.Monitored.html#TYPEmt">mt</a><br>       <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">send_c k1 k2</code> is the non-dependent version of <code class="code">receive_d</code> and is
+equivalent to <code class="code">send_d k1 (fun _ -&gt; k2)</code>.<br>
+</div>
+
+<pre><span id="VALbranch_c"><span class="keyword">val</span> branch_c</span> : <code class="type">bool <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('c, 'd) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       (('a, 'b) <a href="Session.html#TYPEst">Session.st</a>, ('c, 'd) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEchoice">Session.choice</a> <a href="Session.html#TYPEit">Session.it</a><br>       <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">branch_c k1 k2 k3</code> is the contract satisfied by an endpoint used
+to accept a selection that satisfies <code class="code">k1</code> and then according to either
+<code class="code">k2</code> or <code class="code">k3</code> depending on the selection.<br>
+</div>
+
+<pre><span id="VALchoose_c"><span class="keyword">val</span> choose_c</span> : <code class="type">bool <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('c, 'd) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       (('b, 'a) <a href="Session.html#TYPEst">Session.st</a>, ('d, 'c) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEchoice">Session.choice</a> <a href="Session.html#TYPEot">Session.ot</a><br>       <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">choose_c k1 k2 k3</code> is the contract satisfied by an endpoint used
+to perform a selection that satisfies <code class="code">k1</code> and then according to
+either <code class="code">k2</code> or <code class="code">k3</code> depending on the selection.<br>
+</div>
+
+<pre><span id="VALbranch_if_c"><span class="keyword">val</span> branch_if_c</span> : <code class="type">bool -><br>       ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('c, 'd) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       (('a, 'b) <a href="Session.html#TYPEst">Session.st</a>, ('c, 'd) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEchoice">Session.choice</a> <a href="Session.html#TYPEit">Session.it</a><br>       <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">branch_if_c b k1 k2</code> is the contract satisfied by an endpoint
+used to accept the selection <code class="code">b</code> and then according to either <code class="code">k1</code> or
+<code class="code">k2</code> depending on whether <code class="code">b</code> is respectively <code class="code">true</code> or <code class="code">false</code>.<br>
+</div>
+
+<pre><span id="VALchoose_if_c"><span class="keyword">val</span> choose_if_c</span> : <code class="type">bool -><br>       ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       ('c, 'd) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       (('b, 'a) <a href="Session.html#TYPEst">Session.st</a>, ('d, 'c) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEchoice">Session.choice</a> <a href="Session.html#TYPEot">Session.ot</a><br>       <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">choose_if_c b k1 k2</code> is the contract satisfied by an endpoint
+used to perform the selection <code class="code">b</code> and then according to either <code class="code">k1</code> or
+<code class="code">k2</code> depending on whether <code class="code">b</code> is respectively <code class="code">true</code> or <code class="code">false</code>.<br>
+</div>
+
+<pre><span id="VALbranch_true_c"><span class="keyword">val</span> branch_true_c</span> : <code class="type">('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       (('a, 'b) <a href="Session.html#TYPEst">Session.st</a>, ('c, 'd) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEchoice">Session.choice</a> <a href="Session.html#TYPEit">Session.it</a><br>       <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">branch_true_c k</code> is just a shortcut for <code class="code">branch_if_c true k
+any_c</code>.<br>
+</div>
+
+<pre><span id="VALbranch_false_c"><span class="keyword">val</span> branch_false_c</span> : <code class="type">('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       (('c, 'd) <a href="Session.html#TYPEst">Session.st</a>, ('a, 'b) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEchoice">Session.choice</a> <a href="Session.html#TYPEit">Session.it</a><br>       <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">branch_false_c k</code> is just a shortcut for <code class="code">branch_if_c false k
+any_c</code>.<br>
+</div>
+
+<pre><span id="VALchoose_true_c"><span class="keyword">val</span> choose_true_c</span> : <code class="type">('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       (('b, 'a) <a href="Session.html#TYPEst">Session.st</a>, ('c, 'd) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEchoice">Session.choice</a> <a href="Session.html#TYPEot">Session.ot</a><br>       <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">choose_true_c k</code> is just a shortcut for <code class="code">choose_if_c true k
+any_c</code>.<br>
+</div>
+
+<pre><span id="VALchoose_false_c"><span class="keyword">val</span> choose_false_c</span> : <code class="type">('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       (('c, 'd) <a href="Session.html#TYPEst">Session.st</a>, ('b, 'a) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEchoice">Session.choice</a> <a href="Session.html#TYPEot">Session.ot</a><br>       <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a></code></pre><div class="info ">
+<code class="code">choose_false_c k</code> is just a shortcut for <code class="code">choose_if_c false k
+any_c</code>.<br>
+</div>
+<br>
+<h2 id="2_Monitoredcommunications">Monitored communications</h2><br>
+
+<pre><span id="VALmonitor"><span class="keyword">val</span> monitor</span> : <code class="type">('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> <a href="Session.Monitored.html#TYPEct">ct</a> -><br>       string -><br>       string -><br>       ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> -><br>       ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a></code></pre><div class="info ">
+<code class="code">monitor k pos neg ep</code> wraps <code class="code">ep</code> with a monitor for contract
+<code class="code">k</code>. <code class="code">pos</code> and <code class="code">neg</code> are the positive and negative labels of the
+monitors identifying the parties responsible for respectively
+receiving messages from and sending messages on <code class="code">ep</code>.<br>
+<b>Raises</b> <code>Blame</code> if
+the contract is flat and a contract violation is detected.<br>
+<b>Returns</b> a
+monitored endpoint.<br>
+</div>
+
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?name:string -><br>       unit -><br>       ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> *<br>       ('b, 'a) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a></code></pre><div class="info ">
+<code class="code">m_create ()</code> creates a new monitored session.<br>
+<b>Returns</b> a pair with two valid endpoints and dual types.<br>
+</div>
+
+<pre><span id="VALstring_of_endpoint"><span class="keyword">val</span> string_of_endpoint</span> : <code class="type">('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a> -> string</code></pre><div class="info ">
+<code class="code">string_of_endpoint ep</code> returns a textual representation of <code class="code">ep</code>.<br>
+</div>
+
+<pre><span id="VALclose"><span class="keyword">val</span> close</span> : <code class="type"><a href="Session.html#TYPEet">Session.et</a> <a href="Session.Monitored.html#TYPEmt">mt</a> -> unit</code></pre><div class="info ">
+<code class="code">m_close ep</code> closes the monitored endpoint <code class="code">ep</code>.<br>
+<b>Raises</b><ul><li><code>InvalidEndpoint</code> if the endpoint <code class="code">ep</code> is invalid.</li>
+<li><code>Blame</code> if a
+ contract violation is detected.</li>
+</ul>
+</div>
+
+<pre><span id="VALsend"><span class="keyword">val</span> send</span> : <code class="type">'m -><br>       ('m * ('a, 'b) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEot">Session.ot</a> <a href="Session.Monitored.html#TYPEmt">mt</a> -><br>       ('b, 'a) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a></code></pre><div class="info ">
+<code class="code">m_send v ep</code> sends <code class="code">v</code> on the endpoint <code class="code">ep</code> with output
+ capability.<br>
+<b>Raises</b><ul><li><code>InvalidEndpoint</code> if
+ <code class="code">ep</code> is invalid.</li>
+<li><code>Blame</code> if a contract violation is
+ detected.</li>
+</ul>
+<b>Returns</b> the endpoint <code class="code">ep</code>.<br>
+</div>
+
+<pre><span id="VALreceive"><span class="keyword">val</span> receive</span> : <code class="type">('m * ('a, 'b) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEit">Session.it</a> <a href="Session.Monitored.html#TYPEmt">mt</a> -><br>       'm * ('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a></code></pre><div class="info ">
+<code class="code">m_receive ep</code> receives a message from <code class="code">ep</code> with input capability.<br>
+<b>Raises</b><ul><li><code>InvalidEndpoint</code> if the endpoint <code class="code">ep</code> is
+ invalid.</li>
+<li><code>Blame</code> if a contract violation is detected.</li>
+</ul>
+<b>Returns</b> a pair <code class="code">(v, ep)</code> with the received message <code class="code">v</code> and the
+ endpoint <code class="code">ep</code>.<br>
+</div>
+
+<pre><span id="VALchoose_true"><span class="keyword">val</span> choose_true</span> : <code class="type">(('a, 'b) <a href="Session.html#TYPEst">Session.st</a>, ('c, 'd) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEchoice">Session.choice</a> <a href="Session.html#TYPEot">Session.ot</a><br>       <a href="Session.Monitored.html#TYPEmt">mt</a> -> ('b, 'a) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a></code></pre><div class="info ">
+<code class="code">m_choose_true ep</code> selects <code class="code">true</code> on <code class="code">ep</code>.<br>
+<b>Raises</b><ul><li><code>InvalidEndpoint</code> if the endpoint <code class="code">ep</code> is invalid.</li>
+<li><code>Blame</code> if a contract violation is detected.</li>
+</ul>
+<b>Returns</b> the endpoint
+<code class="code">ep</code>.<br>
+</div>
+
+<pre><span id="VALchoose_false"><span class="keyword">val</span> choose_false</span> : <code class="type">(('a, 'b) <a href="Session.html#TYPEst">Session.st</a>, ('c, 'd) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEchoice">Session.choice</a> <a href="Session.html#TYPEot">Session.ot</a><br>       <a href="Session.Monitored.html#TYPEmt">mt</a> -> ('d, 'c) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a></code></pre><div class="info ">
+<code class="code">m_choose_false ep</code> selects <code class="code">false</code> on <code class="code">ep</code>.<br>
+<b>Raises</b><ul><li><code>InvalidEndpoint</code> if the endpoint <code class="code">ep</code> is invalid.</li>
+<li><code>Blame</code> if a contract violation is detected.</li>
+</ul>
+<b>Returns</b> the endpoint
+<code class="code">ep</code>.<br>
+</div>
+
+<pre><span id="VALbranch"><span class="keyword">val</span> branch</span> : <code class="type">(('a, 'b) <a href="Session.html#TYPEst">Session.st</a>, ('c, 'd) <a href="Session.html#TYPEst">Session.st</a>) <a href="Session.html#TYPEchoice">Session.choice</a> <a href="Session.html#TYPEit">Session.it</a><br>       <a href="Session.Monitored.html#TYPEmt">mt</a> -><br>       (('a, 'b) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a>,<br>        ('c, 'd) <a href="Session.html#TYPEst">Session.st</a> <a href="Session.Monitored.html#TYPEmt">mt</a>)<br>       <a href="Session.html#TYPEchoice">Session.choice</a></code></pre><div class="info ">
+<code class="code">m_branch ep</code> accepts a selection made on <code class="code">ep</code>.<br>
+<b>Raises</b><ul><li><code>InvalidEndpoint</code> if the endpoint <code class="code">ep</code> is invalid.</li>
+<li><code>Blame</code> if a contract violation
+is detected.</li>
+</ul>
+<b>Returns</b> <code class="code">`True ep</code>
+or <code class="code">`False ep</code> according to the selection made.<br>
+</div>
+</body></html>

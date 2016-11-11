@@ -1,0 +1,29 @@
+FuSe
+
+REQUIREMENTS
+------------
+
+  OCaml
+
+COMPILING
+---------
+
+  make
+
+TESTING
+-------
+
+  ./src/Math
+  ./src/test_iterator
+
+SESSION TYPE INFERENCE
+----------------------
+
+  cd examples
+  make types
+
+DOCUMENTATION
+-------------
+
+  open html/index.html
+
