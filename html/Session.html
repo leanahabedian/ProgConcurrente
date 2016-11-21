@@ -66,7 +66,7 @@ protocol to be performed first, followed by <code class="code">'b</code>.<br>
 </div>
 
 
-<pre><span id="TYPEchoice"><span class="keyword">type</span> <code class="type">('a, 'b)</code> choice</span> = <code class="type">('a, 'b) <a href="Session.html#TYPEchoice">choice</a></code> </pre>
+<pre><span id="TYPEchoice"><span class="keyword">type</span> <code class="type">('a, 'b)</code> choice</span> = <code class="type">[ `False of 'b | `True of 'a ]</code> </pre>
 <div class="info ">
 The type of a binary choice, where <code class="code">'a</code> is the protocol to be
 performed if <code class="code">`True</code> is selected and <code class="code">'b</code> is the protocol to be
