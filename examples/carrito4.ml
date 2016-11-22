@@ -18,10 +18,11 @@ let rec pagar ep =
   let pagosEp, ep = Session.receive ep in
   let pagosEp = Session.send precio pagosEp in
   let pagosEp = Session.send "tarjeta" pagosEp in
-  let result, _ = Session.receive pagosEp in
+  let result, pagosEp = Session.receive pagosEp in
                      
   if result = 0 then
   let ep = Session.select (fun x -> `Deny x) ep in
+  let ep = Session.send pagosEp ep in
   pagar ep (* reintenta el pago*)
   else
   let ep = Session.select (fun x -> `Accept x) ep in
@@ -68,7 +69,8 @@ let rec carrito kart cantidades clientEp pagosEp =
                     let clientEp = Session.send pagosEp clientEp in
                     match Session.branch clientEp with
                         `Accept clientEp -> Session.close clientEp
-                        | `Deny clientEp -> carrito kart cantidades clientEp pagosEp
+                        | `Deny clientEp -> let newPagosEp, clientEp = Session.receive clientEp in
+                        carrito kart cantidades clientEp newPagosEp
                    
 
   | `Abort clientEp -> let clientEp = Session.send "Session aborted" clientEp in
